@@ -37,6 +37,13 @@ app.get("/dogs",(req,res)=>{
     res.send("WOOF");
 })
 
+app.get("/search",(req,res)=>{
+    const {q} = req.query;   // user jo bhi ?q format me likhega uski value assign (q) ho jayegi req.query object me
+    const {category} = req.query   // user jo bhi &category format me likhega uski value assign (category) ho jayegi req.query object me
+    console.log(q,req.query);  //req.query is the whole query object which contains key and value pairs of the things entered by user in url after ?q!
+    res.send(`Search results for ${q} in the category ${category}`)
+})
+
 app.get("*",(req,res)=>{    // for any other route!
     res.send("I don't know that route!");
 })
