@@ -19,18 +19,22 @@ app.post("/tacos", (req, res) => {
 
 const comments = [
   {
+    id:1,
     username:"Dikshant",
     comment:"I love Billu"
   },
   {
+    id:2,
     username:"Manan",
     comment:"I love cats"
   },
   {
+    id:3,
     username:"Aryan",
     comment:"Why are you running?"
   },
   {
+    id:4,
     username:"Mayank",
     comment:"That is awesome"
   }
@@ -48,8 +52,23 @@ app.get("/comments/new",(req,res)=>{    // DIRECTS to a FORM in WHICH WE CAN MAK
 app.post("/comments",(req,res)=>{
   const {username,comment} = req.body;
   comments.push({username,comment})   // THIS WILL CREATE A NEW COMMENT --> COMMENTS OBJECT WILL HAVE A NEW MEMBER !
-  res.send("IT WORKS!");
+  // res.send("IT WORKS!");  
+
+  res.redirect("/comments")   //REDIRECT TO THE COMMENT PATH JUST AFTER ADDING A NEW COMMENT
 })
+
+app.get("/comments/:id",(req,res)=>{
+  const {id} = req.params;
+  if( comment = comments.find((c)=>c.id === parseInt(id))){
+    res.render("comments/show.ejs", {...comment});  //PASSING THE COMMENT to EJS  
+  }
+  else{
+    res.send("Comment not found")
+  }
+ 
+})
+
+
 app.listen(4000, () => {
   console.log("Server Live on Localhost 4000 ");
 });
