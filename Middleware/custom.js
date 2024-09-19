@@ -18,8 +18,8 @@ app.get("/dogs", (req,res)=>{
     console.log(req.reqTime); //tells when the req was made
     res.send("WOOF WOOF");
 });
-
-app.use((req,res)=>{
+ 
+app.use((req,res)=>{   //IF USER ENTERED STUPID URL ROUTES
     res.status(404).send("NOT FOUND!");
 }); 
 
