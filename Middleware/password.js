@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const AppError = require("./AppError");
-app.use(morgan("dev")); //tells status of any req/response
+// app.use(morgan("dev")); //tells status of any req/response
 
 app.use("/dogs", (req, res, next) => {
     const { password } = req.query;
@@ -29,16 +29,16 @@ app.get("/dogs", (req, res) => {
 app.get("/error", (req, res) => {
   dog.woof();
 });
-// BASIC ERROR HANDLER MIDDLEWARE : has 4 parameters!
-// app.use((err,req,res,next)=>{
-//    console.log("***********************");
-//    console.log("ERROR");
-//    console.log("***********************");
-//    next(err);
-// });
+// GENERAL ERROR HANDLER MIDDLEWARE : has 4 parameters!
+app.use((err,req,res,next)=>{
+   console.log("***********************");
+   console.log("ERROR");
+   console.log("***********************");
+   next(err); //khaali next use kita te normal middleware ch chale jauga, next de utte error handler object vi pass kr taahi oh error middleware ch pass houga
+});
 
-app.use((err, req, res, next) => {
-  const {status=500, message = "Something went wrong"} = err; //dest the err object of computer based on our custom error class that will match
+app.use((err, req, res, next) => { //default value of status,messagex` if we dont throw error using our AppError Class!
+  const {status=5000, message = "Something went wrong"} = err; //dest the err object of computer based on our custom error class that will match
   console.log( err.message)
   res.status(status).send(message); 
 });
