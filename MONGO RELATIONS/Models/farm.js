@@ -49,12 +49,20 @@ const Farm = mongoose.model("Farm",farmSchema);
 
 // makeAFarm();
 // SIMPLE FUNDA : DUSRE MODEL ME FIND KRO AUR PUSH KRO 
-const addAProduct = async()=>{
-    const farm = await Farm.findOne({name:"Full Belly Farms"});
-    const product = await Product.findOne({name:"Grapes"});
-    farm.products.push(product);
-    const res = await farm.save();
-    console.log(res);
+// const addAProduct = async()=>{
+//     const farm = await Farm.findOne({name:"Full Belly Farms"});
+//     const product = await Product.findOne({name:"Grapes"});
+//     farm.products.push(product);
+//     const res = await farm.save();
+//     console.log(res);
+// }
+
+// addAProduct();
+
+const getFarmWithProducts = async()=>{
+    const farm = await Farm.findOne({name:"Full Belly Farms"})
+    .populate('products'); // if we dont use populate(field of schema that is another schema)
+    console.log(farm);
 }
 
-addAProduct();
+getFarmWithProducts();
