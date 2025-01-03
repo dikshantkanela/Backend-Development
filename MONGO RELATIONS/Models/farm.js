@@ -25,6 +25,7 @@ const farmSchema = new mongoose.Schema({
     city:String,
     products:[{type:mongoose.Schema.Types.ObjectId,ref:'Product'}]
     // this product key of the model has a reference of the previous product model!
+    // this is the parent it stores reference of child
 })
 const Product = mongoose.model('Product',productSchema);
 const Farm = mongoose.model("Farm",farmSchema);
