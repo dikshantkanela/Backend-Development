@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 
-app.use(cookieParser()); //cookie parsing middleware for express (req.cookies)
+app.use(cookieParser("mysecretsign")); //cookie parsing middleware for express (req.cookies)
 
 app.get("/greet",(req,res)=>{
     console.log(req.cookies);
@@ -17,6 +17,17 @@ app.get("/setname",(req,res)=>{
     // res.clearCookie("name") // removes a cookie
     res.cookie("friend","Aryan",{httpOnly:true,secure:true,sameSite:true,maxAge:3000})
     res.send("SENT A COOKIE!");
+})
+
+app.get("/signedcookie",(req,res)=>{
+   res.cookie("fruit","orange",{signed:true}); //send a signed-cookie
+//    res.clearCookie("fruit")
+   res.send("GOT YOUR SIGNED FRUIT?");
+})
+
+app.get("/verifyfruit",(req,res)=>{
+    res.send(req.signedCookies) //SIGNED COOKIES KE LIYE ALAG
+    console.log(req.cookies) // BAAKI ALAG HAIN!
 })
 
 app.listen(3000,()=>{
