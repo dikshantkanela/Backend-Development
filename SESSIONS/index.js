@@ -23,7 +23,7 @@ app.get("/register",(req,res)=>{
 })
 
 app.get("/greet",(req,res)=>{
-    res.send(`Welcome, Mr. ${req.session.username}`)
+    res.send(`Welcome, Mr. ${req.query.username}`)
 })
 
 app.listen(3000,()=>{
