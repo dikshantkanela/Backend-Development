@@ -34,6 +34,19 @@ app.post("/register",async(req,res)=>{
     await user.save();
     res.redirect("/")
 })
+app.get("/login",(req,res)=>{
+    res.render("login.ejs")
+})
+app.post("/login",async (req,res)=>{
+    const {username,password} = req.body;
+    const user = await User.findOne({username:username}); //username should be unique
+    const authenticateUser = await bcrypt.compare(password,user.password);
+    if(authenticateUser){
+        res.send("LOGGED IN SUCCESSFULLY!");
+    } else{
+        res.send("TRY AGAIN!");
+    }
+})
 app.get("/secret",(req,res)=>{
     res.send("You cannot see this unless you are LOGGED IN!")
 })
