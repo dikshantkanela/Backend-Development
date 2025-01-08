@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 //REQ BODY : 
 app.use(express.urlencoded({extended:true}));
 // EJS : 
@@ -19,12 +20,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/authDemo',{useNewUrlParser:true,useU
 
 // USER MODEL :
 const User = require("./models/user");
-
+app.get("/",(req,res)=>{
+    res.send("REGISTERED!")
+})
 app.get("/register",(req,res)=>{
     res.render("register.ejs");
 })
+// USE TO STORE HASHED PASSWORDS IN OUR DB
 app.post("/register",async(req,res)=>{
-    res.send(req.body);
+    const {username,password} = req.body;
+    const hash = await bcrypt.hash(password,12)
+    const user = new User({username:username,password:hash});
+    await user.save();
+    res.redirect("/")
 })
 app.get("/secret",(req,res)=>{
     res.send("You cannot see this unless you are LOGGED IN!")
