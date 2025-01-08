@@ -21,6 +21,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/authDemo',{useNewUrlParser:true,useU
     console.log(err);
    })
 
+const checkLogin = (req,res,next)=>{
+    if(!req.session.user_id){
+       return res.redirect("/login");
+    }
+    next();
+}
 // USER MODEL :
 const User = require("./models/user");
 app.get("/",(req,res)=>{
@@ -54,14 +60,15 @@ app.post("/login",async (req,res)=>{
     }
 })
 app.post("/logout",(req,res)=>{
-    req.session.destroy(); // removes the entire session 
+    req.session.destroy(); // removes the entire session    
     res.redirect("/login")
 })
-app.get("/secret",(req,res)=>{
-    if(!req.session.user_id){
-       res.redirect("/login");
-    }
+app.get("/secret",checkLogin,(req,res)=>{
     res.render("secret.ejs");
+   
+})
+app.get("/topsecret",checkLogin,checkLogin,(req,res)=>{
+    res.send("TOP SECRET");
    
 })
 app.listen(3000,()=>{
